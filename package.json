@@ -1,0 +1,16 @@
+{
+  "name": "my-anime-list-workspace",
+  "private": true,
+  "workspaces": [
+    "client",
+    "server"
+  ],
+  "scripts": {
+    "dev:c": "cd client && npm run dev",
+    "dev:s": "cd server && npm run dev",
+    "dev": "concurrently \"npm run dev:s\" \"npm run dev:c\""
+  },
+  "devDependencies": {
+    "concurrently": "^9.2.0"
+  }
+}
