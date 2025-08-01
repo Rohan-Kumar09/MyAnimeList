@@ -8,7 +8,8 @@
   "scripts": {
     "dev:c": "cd client && npm run dev",
     "dev:s": "cd server && npm run dev",
-    "dev": "concurrently \"npm run dev:s\" \"npm run dev:c\""
+    "dev": "concurrently \"npm run dev:s\" \"npm run dev:c\"",
+    "install:all": "npm install --workspaces && npm install --prefix client && npm install --prefix server"
   },
   "devDependencies": {
     "concurrently": "^9.2.0"
