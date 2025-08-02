@@ -8,5 +8,17 @@ Content-Type: application/json
   "password": "password123"
 }
 
-### Make a GET request to retrieve a users
-GET http://127.0.0.1:8080/user?email=test@example.com
+### Make a POST request to add anime to user's list
+POST http://127.0.0.1:8080/addAnimeToList
+Content-Type: application/json
+
+{
+  "userId": "a8fa687b-0a1e-4d51-8ea3-476f18a01776",
+  "title": "Naruto",
+  "description": "A story about ninjas",
+  "coverImage": "http://example.com/naruto.jpg",
+  "genres": "Action"
+}
+
+### Make a GET request to retrieve a users anime list
+GET http://127.0.0.1:8080/user?user_id=a8fa687b-0a1e-4d51-8ea3-476f18a01776
