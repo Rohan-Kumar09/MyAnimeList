@@ -1,11 +1,13 @@
-
 import { useState } from 'react';
+import { addUser } from '../api/UserMethods';
 import { Link } from 'react-router-dom';
 
-export default function Login() {
+function Register() {
   const [formData, setFormData] = useState({
     email: '',
-    password: ''
+    username: '',
+    password: '',
+    confirmPassword: ''
   });
   const [loading, setLoading] = useState(false);
   const [message, setMessage] = useState('');
@@ -19,16 +21,32 @@ export default function Login() {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    
+    if (formData.password !== formData.confirmPassword) {
+      setMessage('Passwords do not match');
+      return;
+    }
+
     setLoading(true);
     setMessage('');
 
     try {
-      // TODO: Implement login API call
-      console.log('Login attempt:', formData);
-      setMessage('Login functionality coming soon!');
+      const response = await addUser({
+        email: formData.email,
+        username: formData.username,
+        password: formData.password
+      });
+      
+      setMessage('Registration successful! You can now log in.');
+      setFormData({
+        email: '',
+        username: '',
+        password: '',
+        confirmPassword: ''
+      });
     } catch (error) {
-      setMessage('Login failed. Please try again.');
-      console.error('Login error:', error);
+      setMessage('Registration failed. Please try again.');
+      console.error('Registration error:', error);
     } finally {
       setLoading(false);
     }
@@ -39,10 +57,10 @@ export default function Login() {
       <div className="max-w-md w-full space-y-8">
         <div>
           <h2 className="mt-6 text-center text-3xl font-extrabold text-gray-900">
-            Sign in to your account
+            Create your account
           </h2>
           <p className="mt-2 text-center text-sm text-gray-600">
-            Welcome back to MyAnimeList
+            Join MyAnimeList to start tracking your favorite anime
           </p>
         </div>
         
@@ -65,6 +83,22 @@ export default function Login() {
             </div>
             
             <div>
+              <label htmlFor="username" className="block text-sm font-medium text-gray-700">
+                Username
+              </label>
+              <input
+                id="username"
+                name="username"
+                type="text"
+                required
+                value={formData.username}
+                onChange={handleChange}
+                className="mt-1 appearance-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-md focus:outline-none focus:ring-blue-500 focus:border-blue-500"
+                placeholder="Choose a username"
+              />
+            </div>
+            
+            <div>
               <label htmlFor="password" className="block text-sm font-medium text-gray-700">
                 Password
               </label>
@@ -79,11 +113,27 @@ export default function Login() {
                 placeholder="Enter your password"
               />
             </div>
+            
+            <div>
+              <label htmlFor="confirmPassword" className="block text-sm font-medium text-gray-700">
+                Confirm Password
+              </label>
+              <input
+                id="confirmPassword"
+                name="confirmPassword"
+                type="password"
+                required
+                value={formData.confirmPassword}
+                onChange={handleChange}
+                className="mt-1 appearance-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-md focus:outline-none focus:ring-blue-500 focus:border-blue-500"
+                placeholder="Confirm your password"
+              />
+            </div>
           </div>
 
           {message && (
             <div className={`text-center text-sm ${
-              message.includes('soon') ? 'text-blue-600' : 'text-red-600'
+              message.includes('successful') ? 'text-green-600' : 'text-red-600'
             }`}>
               {message}
             </div>
@@ -95,15 +145,15 @@ export default function Login() {
               disabled={loading}
               className="group relative w-full flex justify-center py-2 px-4 border border-transparent text-sm font-medium rounded-md text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 disabled:opacity-50"
             >
-              {loading ? 'Signing in...' : 'Sign in'}
+              {loading ? 'Creating Account...' : 'Sign up'}
             </button>
           </div>
 
           <div className="text-center">
             <span className="text-sm text-gray-600">
-              Don't have an account?{' '}
-              <Link to="/register" className="font-medium text-blue-600 hover:text-blue-500">
-                Sign up here
+              already have an account?{' '}
+              <Link to="/login" className="font-medium text-blue-600 hover:text-blue-500">
+                login here
               </Link>
             </span>
           </div>
@@ -112,3 +162,5 @@ export default function Login() {
     </div>
   );
 }
+
+export default Register;

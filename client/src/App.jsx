@@ -1,26 +1,32 @@
-import { getAnimeByTitle, getAnimeByGenere, addUser } from "./api/UserMethods";
+import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import Navbar from "./components/Navbar";
+import Home from "./components/Home";
+import Login from "./components/Login";
+import Register from "./components/Register";
+import Browse from "./components/Browse";
+import { useTokenRefresh } from "./hooks/useTokenRefresh";
+import { useState } from 'react';
 
 function App() {
-  //getAnimeByTitle("Naruto").then(data => {
-  //  console.log(data);
-  //})
+  const [token, setToken] = useState(localStorage.getItem("token"));
 
-  //getAnimeByGenere("Action").then(data => {
-  //  console.log(data);
-  //})
-
-  //addUser({
-  //  email: "test@test.com",
-  //  username: "testuser",
-  //  password: "password123"
-  //}).then(response => {
-  //  console.log("User added:", response);
-  //})
+  useTokenRefresh(token, newToken => {
+    setToken(newToken);
+    localStorage.setItem("token", newToken);
+  });
 
   return (
-    <h1 className='flex items-center justify-center h-screen text-3xl font-bold text-blue-500'>
-      Hello World!
-    </h1>
+    <Router>
+      <div className="min-h-screen bg-gray-50">
+        <Navbar />
+        <Routes>
+          <Route path="/" element={<Home />} />
+          <Route path="/browse" element={<Browse />} />
+          <Route path="/login" element={<Login />} />
+          <Route path="/register" element={<Register />} />
+        </Routes>
+      </div>
+    </Router>
   );
 }
 
