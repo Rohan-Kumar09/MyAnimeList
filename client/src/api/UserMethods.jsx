@@ -92,6 +92,18 @@ export const getAnimeByGenere = async (genere) => {
               }
               genres
               description
+              isAdult
+              meanScore
+              startDate {
+                day
+                month
+                year
+              }
+              endDate {
+                day
+                month
+                year
+              }
             }
           }
         }

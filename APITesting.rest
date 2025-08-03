@@ -4,7 +4,7 @@ POST https://graphql.anilist.co
 Content-Type: application/json
 
 {
-  "query": "query ($genreIn: [String], $page: Int, $perPage: Int) { Page(page: $page, perPage: $perPage) { media(genre_in: $genreIn, type: ANIME, sort: POPULARITY_DESC) { id title { english } coverImage { large } genres description } } }",
+  "query": "  query ($genreIn: [String], $page: Int, $perPage: Int) {          Page(page: $page, perPage: $perPage) {            media(genre_in: $genreIn, type: ANIME, sort: POPULARITY_DESC) {              id              title {                romaji                english              }              coverImage {                large              }              genres              description              isAdult              meanScore              startDate {                day                month                year              }              endDate {                day                month                year              }            }          }        }",
   "variables": {
     "genreIn": ["Action", "Adventure"],
     "page": 1,

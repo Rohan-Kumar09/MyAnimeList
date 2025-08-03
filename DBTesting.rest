@@ -8,10 +8,20 @@ Content-Type: application/json
   "password": "password123"
 }
 
+### Make a POST request to authenticate a user
+### REPLACE <token> with the JWT token received from the login response
+POST http://127.0.0.1:8080/login
+Content-Type: application/json
+
+{
+  "email": "test@example.com",
+  "password": "password123"
+}
+
 ### Make a POST request to add anime to user's list
 POST http://127.0.0.1:8080/addAnimeToList
 Content-Type: application/json
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjUzYTM4N2I0LTNhYTUtNDhmMC04OTcwLTg3YzNkY2QyODA3MCIsImVtYWlsIjoidGVzdEBleGFtcGxlLmNvbSIsInVzZXJuYW1lIjoidGVzdE5hbWUiLCJpYXQiOjE3NTQxNzEyNzMsImV4cCI6MTc1NDE3ODQ3M30.wH9Nu1alONBB6Heg9igjOsG9_dByCu6uh5QJ0pQPGvc
+Authorization: Bearer <token>
 
 {
   "userId": "53a387b4-3aa5-48f0-8970-87c3dcd28070",
@@ -23,17 +33,9 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjUzYTM4N2I0L
 
 ### Make a GET request to retrieve a users anime list
 GET http://127.0.0.1:8080/user?user_id=53a387b4-3aa5-48f0-8970-87c3dcd28070
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjUzYTM4N2I0LTNhYTUtNDhmMC04OTcwLTg3YzNkY2QyODA3MCIsImVtYWlsIjoidGVzdEBleGFtcGxlLmNvbSIsInVzZXJuYW1lIjoidGVzdE5hbWUiLCJpYXQiOjE3NTQxNzE5OTEsImV4cCI6MTc1NDE3Mzc5MX0.OywQRgkhIZJ8PmYxKPh5HtGUC_v_wJDEhqWZcSFNU9k
+Authorization: Bearer <token>
 
-### Make a POST request to authenticate a user
-POST http://127.0.0.1:8080/login
-Content-Type: application/json
-
-{
-  "email": "test@example.com",
-  "password": "password123"
-}
 
 ### Refresh JWT token
 POST http://127.0.0.1:8080/refresh
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjUzYTM4N2I0LTNhYTUtNDhmMC04OTcwLTg3YzNkY2QyODA3MCIsImVtYWlsIjoidGVzdEBleGFtcGxlLmNvbSIsInVzZXJuYW1lIjoidGVzdE5hbWUiLCJpYXQiOjE3NTQxNzEyNzMsImV4cCI6MTc1NDE3ODQ3M30.wH9Nu1alONBB6Heg9igjOsG9_dByCu6uh5QJ0pQPGvc
+Authorization: Bearer <token>
