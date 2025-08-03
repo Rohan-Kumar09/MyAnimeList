@@ -1,6 +1,7 @@
 
 import { useState } from 'react';
 import { Link } from 'react-router-dom';
+import { userLogin } from '../api/UserMethods';
 
 export default function Login() {
   const [formData, setFormData] = useState({
@@ -23,9 +24,18 @@ export default function Login() {
     setMessage('');
 
     try {
-      // TODO: Implement login API call
-      console.log('Login attempt:', formData);
-      setMessage('Login functionality coming soon!');
+      const response = await userLogin({
+        email: formData.email,
+        password: formData.password
+      })
+      if (response.error) {
+        setMessage(response.error);
+      } else {
+        setMessage('Login successful! Redirecting...');
+        
+        // redirect to Browse page after successful login
+        <Link to="/Browse" />
+      }
     } catch (error) {
       setMessage('Login failed. Please try again.');
       console.error('Login error:', error);

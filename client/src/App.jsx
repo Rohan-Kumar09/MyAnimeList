@@ -6,6 +6,7 @@ import Register from "./components/Register";
 import Browse from "./components/Browse";
 import { useTokenRefresh } from "./hooks/useTokenRefresh";
 import { useState } from 'react';
+import Saved from "./components/Saved";
 
 function App() {
   const [token, setToken] = useState(localStorage.getItem("token"));
@@ -24,6 +25,7 @@ function App() {
           <Route path="/browse" element={<Browse />} />
           <Route path="/login" element={<Login />} />
           <Route path="/register" element={<Register />} />
+          <Route path="/saved" element={<Saved />} />
         </Routes>
       </div>
     </Router>

@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import { useState } from 'react';
 import { getAnimeByTitle, getAnimeByGenere } from '../api/UserMethods';
 
 function Browse() {

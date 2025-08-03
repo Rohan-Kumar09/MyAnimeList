@@ -12,6 +12,9 @@ export default function Navbar() {
           <Link to="/" className="text-gray-300 hover:text-white transition-colors">
             Home
           </Link>
+          <Link to="/saved" className="text-gray-300 hover:text-white transition-colors">
+            Saved
+          </Link>
           <Link to="/browse" className="text-gray-300 hover:text-white transition-colors">
             Browse
           </Link>

@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react"
 import { AiOutlineClose } from "react-icons/ai";
 import { getAnimeByGenere } from "../api/UserMethods"
+import { useAnimeCache } from "../context/AnimeCacheContext";
 import DOMPurify from 'dompurify';
 
 export default function genereList({ genere }) {
@@ -8,12 +9,19 @@ export default function genereList({ genere }) {
   const [animeDataList, setAnimeDataList] = useState(null);
   const [selectedAnime, setSelectedAnime] = useState(null);
   const [showModal, setShowModal] = useState(false);
+  // Use global cache from context
+  const { cache, setCache } = useAnimeCache();
 
   useEffect(() => {
-    getAnimeByGenere(genere).then(dataFetch => {
-      setAnimeDataList(dataFetch.data.Page.media);
-      console.log(dataFetch.data.Page.media);
-    });
+    if (cache[genere]) {
+      setAnimeDataList(cache[genere]);
+    } else {
+      getAnimeByGenere(genere).then(dataFetch => {
+        setAnimeDataList(dataFetch.data.Page.media);
+        setCache(prevCache => ({ ...prevCache, [genere]: dataFetch.data.Page.media }));
+        console.log(dataFetch.data.Page.media);
+      });
+    }
   }, [genere]);
 
   return (

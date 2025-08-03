@@ -31,7 +31,7 @@ function Register() {
     setMessage('');
 
     try {
-      const response = await addUser({
+      await addUser({
         email: formData.email,
         username: formData.username,
         password: formData.password
