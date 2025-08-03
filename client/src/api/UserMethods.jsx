@@ -1,5 +1,5 @@
-const database = "http://127.0.0.1:8080/"
-const infoapi = "https://graphql.anilist.co"
+const database = import.meta.env.VITE_DATABASE;
+const infoapi = import.meta.env.VITE_INFOAPI;
 
 // For adding a user
 export const addUser = async (userData) => {
