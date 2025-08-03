@@ -46,17 +46,20 @@ export const getAnimeByTitle = async (title) => {
     },
     body: JSON.stringify({
       query: `
-        query ($search: String) {
-          Media(search: $search, type: ANIME) {
-            id
-            title {
-              english
+        query ($search: String!, $page: Int = 1, $perPage: Int = 10) {
+          Page(page: $page, perPage: $perPage) {
+            media(search: $search, type: ANIME) {
+              id
+              title {
+                romaji
+                english
+              }
+              coverImage {
+                large
+              }
+              description
+              genres
             }
-            coverImage {
-              large
-            }
-            description
-            genres
           }
         }
       `,

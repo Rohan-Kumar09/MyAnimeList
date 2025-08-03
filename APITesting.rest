@@ -1,0 +1,24 @@
+
+### Fetch pages with genere
+POST https://graphql.anilist.co
+Content-Type: application/json
+
+{
+  "query": "query ($genreIn: [String], $page: Int, $perPage: Int) { Page(page: $page, perPage: $perPage) { media(genre_in: $genreIn, type: ANIME, sort: POPULARITY_DESC) { id title { english } coverImage { large } genres description } } }",
+  "variables": {
+    "genreIn": ["Action", "Adventure"],
+    "page": 1,
+    "perPage": 10
+  }
+}
+
+### Fetch pages with title
+POST https://graphql.anilist.co
+Content-Type: application/json
+
+{
+  "query": "query ($search: String!, $page: Int = 1, $perPage: Int = 10) {  Page(page: $page, perPage: $perPage) {    media(search: $search, type: ANIME) {      id      title {        romaji        english      }      coverImage {        large      }      description      genres    }  }}",
+  "variables": {
+    "search": "doramon"
+  }
+}
