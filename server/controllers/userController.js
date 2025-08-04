@@ -1,14 +1,43 @@
 const db = require("../db");
 
 async function addAnimeToUserList(req, res) {
-  const { userId, title, description, coverImage, genres } = req.body;
+  const {
+    userId,
+    title,
+    description,
+    coverImage,
+    genres,
+    isAdult,
+    meanScore,
+    startDate,
+    endDate
+  } = req.body;
   if (!userId || !title) {
     return res.status(400).json({ error: "User ID and title are required" });
   }
   try {
     await db.query(
-      `INSERT INTO users_anime_list (user_id, title, description, coverImage, genres) VALUES (?, ?, ?, ?, ?)`,
-      [userId, title, description, coverImage, genres]
+      `INSERT INTO users_anime_list (
+        user_id, title, description, coverImage, genres,
+        isAdult, meanScore,
+        startDate_day, startDate_month, startDate_year,
+        endDate_day, endDate_month, endDate_year
+      ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`,
+      [
+        userId,
+        title,
+        description,
+        coverImage,
+        genres,
+        isAdult ?? null,
+        meanScore ?? null,
+        startDate?.day ?? null,
+        startDate?.month ?? null,
+        startDate?.year ?? null,
+        endDate?.day ?? null,
+        endDate?.month ?? null,
+        endDate?.year ?? null
+      ]
     );
     res.status(201).json({ message: "Anime added to user's list successfully" });
   } catch (err) {
@@ -20,7 +49,7 @@ async function addAnimeToUserList(req, res) {
 async function getUserAnime(req, res) {
   const user_id = req.query.user_id;
   if (!user_id) {
-    return res.status(400).json({ error: "Email is required" });
+    return res.status(400).json({ error: "User ID is required" });
   }
 
   try {

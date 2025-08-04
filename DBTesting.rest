@@ -21,21 +21,25 @@ Content-Type: application/json
 ### Make a POST request to add anime to user's list
 POST http://127.0.0.1:8080/addAnimeToList
 Content-Type: application/json
-Authorization: Bearer <token>
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjIxM2M5YTJhLWQ3OGYtNGRmMS1hZjBkLWZkYmYxYjY0MzllYSIsImVtYWlsIjoidGVzdEBleGFtcGxlLmNvbSIsInVzZXJuYW1lIjoidGVzdE5hbWUiLCJpYXQiOjE3NTQyNzA5MDMsImV4cCI6MTc1NDI3MjcwM30.LQTCZDKYgilWUNmyies004WSoA_K-yBrE1CnsyECSyU
 
 {
-  "userId": "53a387b4-3aa5-48f0-8970-87c3dcd28070",
+  "userId": "213c9a2a-d78f-4df1-af0d-fdbf1b6439ea",
   "title": "Naruto",
   "description": "A story about ninjas",
   "coverImage": "http://example.com/naruto.jpg",
-  "genres": "Action"
+  "genres": "Action",
+  "isAdult": false,
+  "meanScore": 79,
+  "startDate": { "day": 3, "month": 10, "year": 2002 },
+  "endDate": { "day": 8, "month": 2, "year": 2007 }
 }
 
 ### Make a GET request to retrieve a users anime list
 GET http://127.0.0.1:8080/user?user_id=53a387b4-3aa5-48f0-8970-87c3dcd28070
-Authorization: Bearer <token>
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjIxM2M5YTJhLWQ3OGYtNGRmMS1hZjBkLWZkYmYxYjY0MzllYSIsImVtYWlsIjoidGVzdEBleGFtcGxlLmNvbSIsInVzZXJuYW1lIjoidGVzdE5hbWUiLCJpYXQiOjE3NTQyNzA5MDMsImV4cCI6MTc1NDI3MjcwM30.LQTCZDKYgilWUNmyies004WSoA_K-yBrE1CnsyECSyU
 
 
 ### Refresh JWT token
 POST http://127.0.0.1:8080/refresh
-Authorization: Bearer <token>
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjIxM2M5YTJhLWQ3OGYtNGRmMS1hZjBkLWZkYmYxYjY0MzllYSIsImVtYWlsIjoidGVzdEBleGFtcGxlLmNvbSIsInVzZXJuYW1lIjoidGVzdE5hbWUiLCJpYXQiOjE3NTQyNzA5MDMsImV4cCI6MTc1NDI3MjcwM30.LQTCZDKYgilWUNmyies004WSoA_K-yBrE1CnsyECSyU

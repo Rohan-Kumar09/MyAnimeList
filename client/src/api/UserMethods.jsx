@@ -44,9 +44,13 @@ export const addUser = async (userData) => {
 }
 
 // For getting user information
-export const getUserInfo = async (userEmail) => {
+export const getUserInfo = async (userId, token) => {
   try {
-    const response = await fetch(`${database}user/${userEmail}`);
+    const response = await fetch(`${database}user?user_id=${userId}`, {
+      headers: {
+        Authorization: `Bearer ${token}`
+      }
+    });
     if (!response.ok) {
       throw new Error("Network response was not ok");
     }

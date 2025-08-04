@@ -1,6 +1,9 @@
 import { useEffect, useRef } from "react";
 import { jwtDecode } from "jwt-decode";
 
+// for refresh endpoint
+const database = import.meta.env.VITE_DATABASE;
+
 export function useTokenRefresh(token, setToken) {
   const timerRef = useRef();
 
@@ -11,12 +14,12 @@ export function useTokenRefresh(token, setToken) {
     const exp = decoded.exp * 1000; // ms
     const now = Date.now();
     // Refresh 2 minutes before expiry
-    const refreshTime = exp - now - 2 * 60 * 1000;
+    const refreshTime = 100000; // 1 min sec for test //exp - now - 2 * 60 * 1000;
 
     if (timerRef.current) clearTimeout(timerRef.current);
 
     timerRef.current = setTimeout(() => {
-      fetch("/refresh", {
+      fetch(`${database}refresh`, {
         method: "POST",
         headers: { Authorization: `Bearer ${token}` }
       })
