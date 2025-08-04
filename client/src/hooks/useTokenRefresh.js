@@ -14,7 +14,7 @@ export function useTokenRefresh(token, setToken) {
     const exp = decoded.exp * 1000; // ms
     const now = Date.now();
     // Refresh 2 minutes before expiry
-    const refreshTime = 100000; // 1 min sec for test //exp - now - 2 * 60 * 1000;
+    const refreshTime = exp - now - 2 * 60 * 1000;
 
     if (timerRef.current) clearTimeout(timerRef.current);
 
@@ -23,9 +23,14 @@ export function useTokenRefresh(token, setToken) {
         method: "POST",
         headers: { Authorization: `Bearer ${token}` }
       })
-        .then(res => res.json())
+        .then(res => {
+          return res.json();
+        })
         .then(data => {
           if (data.token) setToken(data.token);
+        })
+        .catch(err => {
+          console.error("Token refresh error:", err);
         });
     }, Math.max(refreshTime, 0));
 

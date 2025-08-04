@@ -13,6 +13,7 @@ const limiter = rateLimit({
   standardHeaders: true, // Return rate limit info in the RateLimit-* headers
   legacyHeaders: false, // Disable the X-RateLimit-* headers
 });
+
 app.use(limiter);
 
 // initializes the database tables if they do not exist
