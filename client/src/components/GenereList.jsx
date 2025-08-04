@@ -1,8 +1,8 @@
 import { useState, useEffect } from "react"
 import AnimeModal from "./AnimeModal";
-import { getAnimeByGenere } from "../api/UserMethods"
+import { getAnimeByGenere } from "../api/FetchMethods"
 import { useAnimeCache } from "../context/AnimeCacheContext";
-import DOMPurify from 'dompurify';
+import { FaRegBookmark } from 'react-icons/fa';
 
 export default function genereList({ genere }) {
   
@@ -32,7 +32,7 @@ export default function genereList({ genere }) {
           {animeDataList && animeDataList.map((anime, index) => (
             <div
               key={index}
-              className="bg-gray-100 p-2 rounded w-48 flex-shrink-0 cursor-pointer hover:shadow-lg transition"
+              className="bg-gray-100 p-2 rounded w-48 flex-shrink-0 cursor-pointer hover:shadow-lg transition relative"
               onClick={() => {
                 setSelectedAnime(anime);
                 setShowModal(true);
@@ -40,7 +40,18 @@ export default function genereList({ genere }) {
             >
               <img src={anime.coverImage.large} alt={anime.title.romaji} className="w-40 h-56 object-cover mb-2 rounded" />
               <h3 className="text-sm font-medium mb-1">{anime.title.english || anime.title.romaji}</h3>
-              <p className="text-xs text-gray-600 line-clamp-3" dangerouslySetInnerHTML={{ __html: DOMPurify.sanitize(anime.description) }} />
+              {/* Save React icon at bottom right */}
+              <button
+                className="absolute bottom-2 right-2 text-blue-500 hover:text-blue-700"
+                onClick={e => {
+                  e.stopPropagation();
+                  // TODO: Add save handler here
+                  alert(`Saved: ${anime.title.english || anime.title.romaji}`);
+                }}
+                title="Save Anime"
+              >
+                <FaRegBookmark size={24} />
+              </button>
             </div>
           ))}
         </div>

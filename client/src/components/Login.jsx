@@ -42,7 +42,7 @@ export default function Login() {
         login(response.user, response.token);
 
         // Redirect to Browse page after successful login
-        navigate('/');  // Redirect to home page
+        navigate('/saved');  // Redirect to home page
       }
     } catch (error) {
       setMessage('Login failed. Please try again.');

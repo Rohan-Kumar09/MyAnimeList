@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { getAnimeByTitle, getAnimeByGenere } from '../api/UserMethods';
+import { getAnimeByTitle, getAnimeByGenere } from '../api/FetchMethods';
 
 function Browse() {
   const [searchTerm, setSearchTerm] = useState('');

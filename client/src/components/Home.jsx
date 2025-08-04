@@ -1,4 +1,3 @@
-import React from 'react';
 import GenereList from './GenereList';
 
 function Home() {

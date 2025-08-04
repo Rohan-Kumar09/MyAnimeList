@@ -1,8 +1,7 @@
 import { useState, useEffect } from "react";
-import { getUserInfo } from "../api/UserMethods";
+import { getUserInfo } from "../api/FetchMethods";
 import { useAuth } from "../context/AuthContext";
 import AnimeModal from "./AnimeModal";
-import DOMPurify from 'dompurify';
 
 export default function SavedPage() {
   const [animeList, setAnimeList] = useState([]);
@@ -48,7 +47,6 @@ export default function SavedPage() {
                   >
                     <img src={anime.coverImage} alt={anime.title} className="w-40 h-56 object-cover mb-2 rounded" />
                     <h3 className="text-sm font-medium mb-1">{anime.title || anime.title}</h3>
-                    <p className="text-xs text-gray-600 line-clamp-3" dangerouslySetInnerHTML={{ __html: DOMPurify.sanitize(anime.description || "") }} />
                   </div>
                 ))}
               </div>
