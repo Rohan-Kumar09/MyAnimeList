@@ -1,9 +1,14 @@
 
 import { useState } from 'react';
-import { Link } from 'react-router-dom';
+import { useNavigate, Link } from 'react-router-dom';
 import { userLogin } from '../api/UserMethods';
+import { useAuth } from '../context/AuthContext';
 
 export default function Login() {
+
+  const { login } = useAuth();
+  const navigate = useNavigate();
+
   const [formData, setFormData] = useState({
     email: '',
     password: ''
@@ -33,8 +38,11 @@ export default function Login() {
       } else {
         setMessage('Login successful! Redirecting...');
         
-        // redirect to Browse page after successful login
-        <Link to="/Browse" />
+        // Store token and user data in authContext
+        login(response.user, response.token);
+
+        // Redirect to Browse page after successful login
+        navigate('/');  // Redirect to home page
       }
     } catch (error) {
       setMessage('Login failed. Please try again.');

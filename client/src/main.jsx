@@ -3,9 +3,14 @@ import { createRoot } from 'react-dom/client'
 import './global.css'
 import App from './App.jsx'
 import { AnimeCacheProvider } from './context/AnimeCacheContext.jsx'
+import { AuthProvider } from './context/AuthContext.jsx'
 
 createRoot(document.getElementById('root')).render(
-  <AnimeCacheProvider>
-    <App />
-  </AnimeCacheProvider>
+  <StrictMode>
+    <AuthProvider>
+      <AnimeCacheProvider>
+        <App />
+      </AnimeCacheProvider>
+    </AuthProvider>
+  </StrictMode>
 )
