@@ -20,7 +20,11 @@ export default function AnimeModal({ anime, onClose }) {
           <img src={anime.coverImage?.large} alt={anime.title?.romaji} className="w-40 h-56 object-cover rounded" />
           <div>
             <h2 className="text-2xl font-bold mb-2">{anime.title?.english || anime.title?.romaji}</h2>
-            <p className="text-sm text-gray-700 mb-2"><strong>Genres:</strong> {anime.genres && anime.genres.join(', ')}</p>
+            <p className="text-sm text-gray-700 mb-2"><strong>Genres:</strong> {
+              Array.isArray(anime.genres)
+                ? anime.genres.join(', ')
+                : (typeof anime.genres === 'string' ? anime.genres : 'N/A')
+            }</p>
             <p className="text-sm text-gray-700 mb-2"><strong>Mean Score:</strong> {anime.meanScore !== undefined ? anime.meanScore : 'N/A'}</p>
             <p className="text-sm text-gray-700 mb-2"><strong>Adult Content:</strong> {anime.isAdult ? 'Yes' : 'No'}</p>
             <p className="text-sm text-gray-700 mb-2"><strong>Start Date:</strong> {
