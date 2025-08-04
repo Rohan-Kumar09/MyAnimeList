@@ -3,6 +3,8 @@ import AnimeModal from "./AnimeModal";
 import { getAnimeByGenere } from "../api/FetchMethods"
 import { useAnimeCache } from "../context/AnimeCacheContext";
 import { FaRegBookmark } from 'react-icons/fa';
+import { useAuth } from "../context/AuthContext";
+import { addAnimeToList } from "../api/UserModifyMethod";
 
 export default function genereList({ genere }) {
   
@@ -11,6 +13,9 @@ export default function genereList({ genere }) {
   const [showModal, setShowModal] = useState(false);
   // Use global cache from context
   const { cache, setCache } = useAnimeCache();
+
+  const { user, token } = useAuth();
+  // user for user.id and token for authorization
 
   useEffect(() => {
     if (cache[genere]) {
@@ -45,8 +50,34 @@ export default function genereList({ genere }) {
                 className="absolute bottom-2 right-2 text-blue-500 hover:text-blue-700"
                 onClick={e => {
                   e.stopPropagation();
-                  // TODO: Add save handler here
-                  alert(`Saved: ${anime.title.english || anime.title.romaji}`);
+                  // Add anime to user's Saved List
+                  // Make sure animeInfo object is what the server expects
+                  const animeInfo = {
+                    userId: user.id, // DB expects userId
+                    title: anime.title.english || anime.title.romaji,
+                    description: anime.description,
+                    coverImage: anime.coverImage.large,
+                    genres: anime.genres.join(", "),
+                    isAdult: anime.isAdult,
+                    meanScore: anime.meanScore,
+                    startDate: { 
+                      day: anime.startDate.day,
+                      month: anime.startDate.month,
+                      year: anime.startDate.year
+                    },
+                    endDate: { 
+                      day: anime.endDate.day,
+                      month: anime.endDate.month,
+                      year: anime.endDate.year
+                    },
+                  };
+                  console.log("sending to db:", animeInfo);
+                  addAnimeToList(animeInfo, token).then(() => {
+                    alert(`Saved: ${anime.title.english || anime.title.romaji}`);
+                  }).catch(err => {
+                    console.error("Error saving anime:", err);
+                    alert("Failed to save anime");
+                  });
                 }}
                 title="Save Anime"
               >
