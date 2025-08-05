@@ -1,3 +1,13 @@
+### Fetch anime by IDs
+POST https://graphql.anilist.co
+Content-Type: application/json
+
+{
+  "query": "query ($ids: [Int]) {Page {  media(id_in: $ids, type: ANIME) {    id    title {      romaji      english    }    coverImage {      large    }    genres    description    isAdult    meanScore    startDate {      day      month      year    }    endDate {      day      month      year    }  }}}",
+  "variables": {
+    "ids": [20, 21, 22, 1, 2, 3, 4, 5, 6, 7]
+  }
+}
 
 ### Fetch pages with genere
 POST https://graphql.anilist.co

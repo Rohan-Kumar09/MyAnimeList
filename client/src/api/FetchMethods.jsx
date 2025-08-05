@@ -20,6 +20,56 @@ export const getUserInfo = async (userId, token) => {
   }
 }
 
+// For fetching saved anime by ID
+export const getSavedAnimeById = async (animeIdList) => {
+  try {
+    const response = await fetch(infoapi, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        query: `
+          query ($ids: [Int]) {
+            Page {
+              media(id_in: $ids, type: ANIME) {
+                id
+                title {
+                  romaji
+                  english
+                }
+                coverImage {
+                  large
+                }
+                genres
+                description
+                isAdult
+                meanScore
+                startDate {
+                  day
+                  month
+                  year
+                }
+                endDate {
+                  day
+                  month
+                  year
+                }
+              }
+            }
+          }
+        `,
+        variables: { ids: animeIdList },
+      }),
+    });
+    const data = await response.json();
+    return data.data.Page.media;
+  } catch (error) {
+    console.error("Error fetching anime by ID:", error);
+    throw error;
+  }
+}
+
 // For search functionality
 export const getAnimeByTitle = async (title) => {
   const response = await fetch(infoapi, {
@@ -40,8 +90,20 @@ export const getAnimeByTitle = async (title) => {
               coverImage {
                 large
               }
-              description
               genres
+              description
+              isAdult
+              meanScore
+              startDate {
+                day
+                month
+                year
+              }
+              endDate {
+                day
+                month
+                year
+              }
             }
           }
         }
@@ -50,7 +112,7 @@ export const getAnimeByTitle = async (title) => {
     }),
   })
   const data = await response.json();
-  return data;
+  return data.data.Page.media;
 }
 
 // For home page
@@ -99,5 +161,5 @@ export const getAnimeByGenere = async (genere) => {
   })
 
   const data = await response.json();
-  return data;
+  return data.data.Page.media;
 }

@@ -22,9 +22,9 @@ export default function genereList({ genere }) {
       setAnimeDataList(cache[genere]);
     } else {
       getAnimeByGenere(genere).then(dataFetch => {
-        setAnimeDataList(dataFetch.data.Page.media);
-        setCache(prevCache => ({ ...prevCache, [genere]: dataFetch.data.Page.media }));
-        console.log(dataFetch.data.Page.media);
+        setAnimeDataList(dataFetch);
+        setCache(prevCache => ({ ...prevCache, [genere]: dataFetch }));
+        console.log(dataFetch);
       });
     }
   }, [genere]);
@@ -51,25 +51,10 @@ export default function genereList({ genere }) {
                 onClick={e => {
                   e.stopPropagation();
                   // Add anime to user's Saved List
-                  // Make sure animeInfo object is what the server expects
+                  // Only send user_id and anime_id
                   const animeInfo = {
-                    userId: user.id, // DB expects userId
-                    title: anime.title.english || anime.title.romaji,
-                    description: anime.description,
-                    coverImage: anime.coverImage.large,
-                    genres: anime.genres.join(", "),
-                    isAdult: anime.isAdult,
-                    meanScore: anime.meanScore,
-                    startDate: { 
-                      day: anime.startDate.day,
-                      month: anime.startDate.month,
-                      year: anime.startDate.year
-                    },
-                    endDate: { 
-                      day: anime.endDate.day,
-                      month: anime.endDate.month,
-                      year: anime.endDate.year
-                    },
+                    user_id: user.id, // DB expects user_id
+                    anime_id: anime.id // DB expects anime_id
                   };
                   console.log("sending to db:", animeInfo);
                   addAnimeToList(animeInfo, token).then(() => {

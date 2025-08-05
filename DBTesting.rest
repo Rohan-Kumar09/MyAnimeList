@@ -5,7 +5,7 @@ Content-Type: application/json
 {
   "email": "test@example.com",
   "username": "testName",
-  "password": "password123"
+  "password": "123"
 }
 
 ### Make a POST request to authenticate a user
@@ -15,28 +15,24 @@ Content-Type: application/json
 
 {
   "email": "test@example.com",
-  "password": "password123"
+  "password": "123"
 }
 
+
 ### Make a POST request to add anime to user's list
+### ADD valid USER ID before running this request
 POST http://127.0.0.1:8080/addAnimeToList
 Content-Type: application/json
 Authorization: Bearer <token>
 
 {
-  "userId": "213c9a2a-d78f-4df1-af0d-fdbf1b6439ea",
-  "title": "Naruto",
-  "description": "A story about ninjas",
-  "coverImage": "http://example.com/naruto.jpg",
-  "genres": "Action",
-  "isAdult": false,
-  "meanScore": 79,
-  "startDate": { "day": 3, "month": 10, "year": 2002 },
-  "endDate": { "day": 8, "month": 2, "year": 2007 }
+  "user_id": "063ffbfb-b216-4df2-9499-c6d0b0183f71",
+  "anime_id": 20
 }
 
-### Make a GET request to retrieve a users anime list
-GET http://127.0.0.1:8080/user?user_id=53a387b4-3aa5-48f0-8970-87c3dcd28070
+
+### Make a GET request to retrieve a user's anime list (returns anime_id array)
+GET http://127.0.0.1:8080/user?user_id=063ffbfb-b216-4df2-9499-c6d0b0183f71
 Authorization: Bearer <token>
 
 

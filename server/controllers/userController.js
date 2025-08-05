@@ -1,43 +1,15 @@
 const db = require("../db");
 
+// Function to add anime_id to user's saved list
 async function addAnimeToUserList(req, res) {
-  const {
-    userId,
-    title,
-    description,
-    coverImage,
-    genres,
-    isAdult,
-    meanScore,
-    startDate,
-    endDate
-  } = req.body;
-  if (!userId || !title) {
-    return res.status(400).json({ error: "User ID and title are required" });
+  const { user_id, anime_id } = req.body;
+  if (!user_id || !anime_id) {
+    return res.status(400).json({ error: "User ID and anime ID are required" });
   }
   try {
     await db.query(
-      `INSERT INTO users_anime_list (
-        user_id, title, description, coverImage, genres,
-        isAdult, meanScore,
-        startDate_day, startDate_month, startDate_year,
-        endDate_day, endDate_month, endDate_year
-      ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`,
-      [
-        userId,
-        title,
-        description,
-        coverImage,
-        genres,
-        isAdult ?? null,
-        meanScore ?? null,
-        startDate?.day ?? null,
-        startDate?.month ?? null,
-        startDate?.year ?? null,
-        endDate?.day ?? null,
-        endDate?.month ?? null,
-        endDate?.year ?? null
-      ]
+      `INSERT INTO users_anime_list (user_id, anime_id) VALUES (?, ?)`,
+      [user_id, anime_id]
     );
     res.status(201).json({ message: "Anime added to user's list successfully" });
   } catch (err) {
@@ -46,6 +18,8 @@ async function addAnimeToUserList(req, res) {
   }
 }
 
+// Function to get user's saved anime list
+// This function retrieves all anime IDs saved by the user
 async function getUserAnime(req, res) {
   const user_id = req.query.user_id;
   if (!user_id) {
@@ -54,7 +28,7 @@ async function getUserAnime(req, res) {
 
   try {
     const [results] = await db.query(
-      `SELECT * FROM users_anime_list WHERE user_id = ?`,
+      `SELECT anime_id FROM users_anime_list WHERE user_id = ?`,
       [user_id]
     );
     if (results.length === 0) {

@@ -33,21 +33,10 @@ async function serverStarter() {
       CREATE TABLE IF NOT EXISTS users_anime_list (
         id INT AUTO_INCREMENT PRIMARY KEY,
         user_id CHAR(36) NOT NULL,
-        title VARCHAR(255) NOT NULL,
-        description TEXT,
-        coverImage VARCHAR(255),
-        genres TEXT,
-        isAdult BOOLEAN,
-        meanScore INT,
-        startDate_day INT,
-        startDate_month INT,
-        startDate_year INT,
-        endDate_day INT,
-        endDate_month INT,
-        endDate_year INT,
+        anime_id INT NOT NULL,
         created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
         FOREIGN KEY (user_id) REFERENCES users(id),
-        UNIQUE (user_id, title)
+        UNIQUE (user_id, anime_id)
       );
     `);
   } catch (error) {
