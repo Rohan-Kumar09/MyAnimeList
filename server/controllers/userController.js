@@ -41,4 +41,21 @@ async function getUserAnime(req, res) {
   }
 }
 
-module.exports = { addAnimeToUserList, getUserAnime };
+async function removeAnimeFromUserList(req, res) {
+  const { user_id, anime_id } = req.body;
+  if (!user_id || !anime_id) {
+    return res.status(400).json({ error: "User ID and anime ID are required" });
+  }
+  try {
+    await db.query(
+      `DELETE FROM users_anime_list WHERE user_id = ? AND anime_id = ?`,
+      [user_id, anime_id]
+    );
+    res.status(200).json({ message: "Anime removed from user's list successfully" });
+  } catch (err) {
+    console.error("Remove anime from user list DB error:", err);
+    res.status(500).json({ error: "Database error" });
+  }
+}
+
+module.exports = { addAnimeToUserList, getUserAnime, removeAnimeFromUserList };

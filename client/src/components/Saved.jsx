@@ -4,6 +4,8 @@ import { useAuth } from "../context/AuthContext";
 import AnimeModal from "./AnimeModal";
 import { getSavedAnimeById } from "../api/FetchMethods";
 import { useAnimeCache } from "../context/AnimeCacheContext";
+import AnimeCard from "./AnimeCard";
+import { removeAnimeFromList } from '../api/UserModifyMethod';
 
 export default function SavedPage() {
   const [animeList, setAnimeList] = useState([]);
@@ -58,17 +60,19 @@ export default function SavedPage() {
         ) : (
           <div className="flex flex-wrap gap-4 min-h-full py-8 px-8 justify-center overflow-y-auto">
             {animeList.map((anime, idx) => (
-              <div
+              <AnimeCard
                 key={idx}
-                className="bg-white shadow-md rounded-lg p-4 w-48 cursor-pointer hover:shadow-lg transition"
+                anime={anime}
+                isSaved={true}
+                onUnsave={async (animeObj) => {
+                  await removeAnimeFromList({ user_id: userId, anime_id: animeObj.id }, token);
+                  setAnimeList(prev => prev.filter(a => a.id !== animeObj.id));
+                }}
                 onClick={() => {
                   setSelectedAnime(anime);
                   setShowModal(true);
                 }}
-              >
-                <img src={anime.coverImage.large} alt={anime.title.romanji || anime.title.english} className="w-40 h-56 object-cover mb-2 rounded" />
-                <h3 className="text-sm font-medium mb-1">{anime.title.romanji || anime.title.english}</h3>
-              </div>
+              />
             ))}
           </div>
         )}

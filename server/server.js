@@ -14,7 +14,7 @@ const limiter = rateLimit({
   legacyHeaders: false, // Disable the X-RateLimit-* headers
 });
 
-app.use(limiter);
+//app.use(limiter); // DISABLED FOR DEVELOPMENT
 
 // initializes the database tables if they do not exist
 async function serverStarter() {
