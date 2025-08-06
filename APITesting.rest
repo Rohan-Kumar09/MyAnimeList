@@ -32,3 +32,12 @@ Content-Type: application/json
     "search": "doramon"
   }
 }
+
+### Fetch all available genres
+POST https://graphql.anilist.co
+Content-Type: application/json
+
+{
+  "query": "query {GenreCollection}",
+  "variables": {}
+}

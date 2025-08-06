@@ -116,50 +116,103 @@ export const getAnimeByTitle = async (title) => {
 }
 
 // For home page
-export const getAnimeByGenere = async (genere) => {
-  const response = await fetch(infoapi, {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-    },
-    body: JSON.stringify({
-      query: `
-        query ($genreIn: [String], $page: Int, $perPage: Int) {
-          Page(page: $page, perPage: $perPage) {
-            media(genre_in: $genreIn, type: ANIME, sort: POPULARITY_DESC) {
-              id
-              title {
-                romaji
-                english
-              }
-              coverImage {
-                large
-              }
-              genres
-              description
-              isAdult
-              meanScore
-              startDate {
-                day
-                month
-                year
-              }
-              endDate {
-                day
-                month
-                year
+// replaced with getAnimeByIds()
+//export const getAnimeByGenere = async (genere) => {
+//  const response = await fetch(infoapi, {
+//    method: "POST",
+//    headers: {
+//      "Content-Type": "application/json",
+//    },
+//    body: JSON.stringify({
+//      query: `
+//        query ($genreIn: [String], $page: Int, $perPage: Int) {
+//          Page(page: $page, perPage: $perPage) {
+//            media(genre_in: $genreIn, type: ANIME, sort: POPULARITY_DESC) {
+//              id
+//              title {
+//                romaji
+//                english
+//              }
+//              coverImage {
+//                large
+//              }
+//              genres
+//              description
+//              isAdult
+//              meanScore
+//              startDate {
+//                day
+//                month
+//                year
+//              }
+//              endDate {
+//                day
+//                month
+//                year
+//              }
+//            }
+//          }
+//        }
+//      `, variables: {
+//        'genreIn': genere,
+//        'page': 1,
+//        'perPage': 10
+//      }
+//    })
+//  })
+
+//  const data = await response.json();
+//  return data.data.Page.media;
+//}
+
+// Fetch multiple anime by an array of IDs (for paginated GenereList)
+// For Home page
+export const getAnimeByIds = async (ids) => {
+  if (!Array.isArray(ids) || ids.length === 0) return [];
+  try {
+    const response = await fetch(infoapi, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        query: `
+          query ($ids: [Int]) {
+            Page {
+              media(id_in: $ids, type: ANIME) {
+                id
+                title {
+                  romaji
+                  english
+                }
+                coverImage {
+                  large
+                }
+                genres
+                description
+                isAdult
+                meanScore
+                startDate {
+                  day
+                  month
+                  year
+                }
+                endDate {
+                  day
+                  month
+                  year
+                }
               }
             }
           }
-        }
-      `, variables: {
-        'genreIn': genere,
-        'page': 1,
-        'perPage': 10
-      }
-    })
-  })
-
-  const data = await response.json();
-  return data.data.Page.media;
-}
+        `,
+        variables: { ids },
+      }),
+    });
+    const data = await response.json();
+    return data.data.Page.media;
+  } catch (error) {
+    console.error("Error fetching anime by IDs:", error);
+    throw error;
+  }
+};

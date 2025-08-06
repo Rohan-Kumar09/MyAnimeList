@@ -1,12 +1,5 @@
 ## TODOS
 
-- remove from saved list
-
-- home page more generas
-- home page view more anime
-- randomize anime on home page
-
-- search page
 - search feature
 - random search by genere
 
