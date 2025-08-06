@@ -1,6 +1,11 @@
 import AnimePage from './AnimeBrowsePage';
+import Search from './Search';
+
+import { useState } from 'react';
 
 function Home() {
+  const [searchActive, setSearchActive] = useState(false);
+  const [searchQuery, setSearchQuery] = useState("");
 
   //const genres = [
   //  "Action", 
@@ -15,15 +20,19 @@ function Home() {
   //  "Slice of Life"
   //];
 
+  const handleSearch = (query) => {
+    setSearchQuery(query);
+    setSearchActive(!!query);
+  };
+
   return (
     <div className="container mx-auto px-4 py-8">
-      <h1 className="text-4xl font-bold text-center mb-8">Welcome to MyAnimeList</h1>
       <div className="text-center">
-        <p className="text-lg text-gray-600 mb-6">
-          Discover, track, and manage your favorite anime series
-        </p>
-
-        <AnimePage />
+        {!searchActive ? (
+          <Search onSearch={handleSearch} />
+        ) : (
+          <AnimePage searchQuery={searchQuery} onBack={() => { setSearchActive(false); setSearchQuery(""); }} />
+        )}
       </div>
     </div>
   );

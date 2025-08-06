@@ -18,9 +18,6 @@ export default function Navbar() {
           <Link to="/saved" className="text-gray-300 hover:text-white transition-colors">
             Saved
           </Link>
-          <Link to="/browse" className="text-gray-300 hover:text-white transition-colors">
-            Browse
-          </Link>
           {isLoggedIn && (
             <Link to="/profile" className="text-gray-300 hover:text-white transition-colors">
               {user.username}

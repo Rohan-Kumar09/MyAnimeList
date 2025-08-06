@@ -117,53 +117,53 @@ export const getAnimeByTitle = async (title) => {
 
 // For home page
 // replaced with getAnimeByIds()
-//export const getAnimeByGenere = async (genere) => {
-//  const response = await fetch(infoapi, {
-//    method: "POST",
-//    headers: {
-//      "Content-Type": "application/json",
-//    },
-//    body: JSON.stringify({
-//      query: `
-//        query ($genreIn: [String], $page: Int, $perPage: Int) {
-//          Page(page: $page, perPage: $perPage) {
-//            media(genre_in: $genreIn, type: ANIME, sort: POPULARITY_DESC) {
-//              id
-//              title {
-//                romaji
-//                english
-//              }
-//              coverImage {
-//                large
-//              }
-//              genres
-//              description
-//              isAdult
-//              meanScore
-//              startDate {
-//                day
-//                month
-//                year
-//              }
-//              endDate {
-//                day
-//                month
-//                year
-//              }
-//            }
-//          }
-//        }
-//      `, variables: {
-//        'genreIn': genere,
-//        'page': 1,
-//        'perPage': 10
-//      }
-//    })
-//  })
+export const getAnimeByGenere = async (genere) => {
+  const response = await fetch(infoapi, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({
+      query: `
+        query ($genreIn: [String], $page: Int, $perPage: Int) {
+          Page(page: $page, perPage: $perPage) {
+            media(genre_in: $genreIn, type: ANIME, sort: POPULARITY_DESC) {
+              id
+              title {
+                romaji
+                english
+              }
+              coverImage {
+                large
+              }
+              genres
+              description
+              isAdult
+              meanScore
+              startDate {
+                day
+                month
+                year
+              }
+              endDate {
+                day
+                month
+                year
+              }
+            }
+          }
+        }
+      `, variables: {
+        'genreIn': genere,
+        'page': 1,
+        'perPage': 10
+      }
+    })
+  })
 
-//  const data = await response.json();
-//  return data.data.Page.media;
-//}
+  const data = await response.json();
+  return data.data.Page.media;
+}
 
 // Fetch multiple anime by an array of IDs (for paginated GenereList)
 // For Home page
