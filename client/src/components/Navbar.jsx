@@ -1,9 +1,11 @@
 import { Link } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
+import { useState } from 'react';
 
 export default function Navbar() {
 
-  const { user, isLoggedIn } = useAuth();
+  const { user, isLoggedIn, logout } = useAuth();
+  const [showDropdown, setShowDropdown] = useState(false);
 
   return (
     <nav className="bg-gray-600 p-4">
@@ -11,7 +13,7 @@ export default function Navbar() {
         <Link to="/" className="text-white text-lg font-bold hover:text-gray-200">
           MyAnimeList
         </Link>
-        <div className="space-x-6">
+        <div className="space-x-6 relative">
           <Link to="/" className="text-gray-300 hover:text-white transition-colors">
             Home
           </Link>
@@ -19,9 +21,24 @@ export default function Navbar() {
             Saved
           </Link>
           {isLoggedIn && (
-            <Link to="/profile" className="text-gray-300 hover:text-white transition-colors">
-              {user.username}
-            </Link>
+            <div className="inline-block relative">
+              <button
+                className="text-gray-300 hover:text-white transition-colors focus:outline-none"
+                onClick={() => setShowDropdown((prev) => !prev)}
+              >
+                {user.username}
+              </button>
+              {showDropdown && (
+                <div className="absolute right-0 mt-2 w-32 bg-white rounded shadow-lg z-10">
+                  <button
+                    className="block w-full text-left px-4 py-2 text-gray-700 hover:bg-gray-100"
+                    onClick={() => { logout(); setShowDropdown(false); }}
+                  >
+                    Logout
+                  </button>
+                </div>
+              )}
+            </div>
           )}
           {!isLoggedIn && (
             <>
