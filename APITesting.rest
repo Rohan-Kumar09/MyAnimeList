@@ -41,3 +41,14 @@ Content-Type: application/json
   "query": "query {GenreCollection}",
   "variables": {}
 }
+
+### Fetch external links for anime
+POST https://graphql.anilist.co
+Content-Type: application/json
+
+{
+  "query": "query {  Media(id: 1, type: ANIME) {    title {      romaji    }    externalLinks {      site      url    }  }}",
+  "variables": {
+    "id": 20
+  }
+}

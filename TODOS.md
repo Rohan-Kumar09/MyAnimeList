@@ -1,6 +1,5 @@
 ## TODOS
 
-- search feature
 - random search by genere
 
 - user settings
@@ -11,3 +10,5 @@
   - lazy load
 
 - when reloading the accound should not get logged out.
+
+- Logout button

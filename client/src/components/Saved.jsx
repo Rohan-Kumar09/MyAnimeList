@@ -10,13 +10,28 @@ import { removeAnimeFromList } from '../api/UserModifyMethod';
 
 export default function SavedPage() {
   const PAGE_SIZE = 10;
-  const PAGE_WINDOW = 7;
+  // Dynamically set PAGE_WINDOW based on screen size
+  const getPageWindow = () => {
+    if (typeof window !== 'undefined' && window.innerWidth <= 640) {
+      return 3; // mobile view
+    }
+    return 7; // desktop view
+  };
+  const [PAGE_WINDOW, setPageWindow] = useState(getPageWindow());
   const [savedAnimeIds, setSavedAnimeIds] = useState([]);
   const [animeList, setAnimeList] = useState([]);
   const [currentPage, setCurrentPage] = useState(1);
   const [pageWindowStart, setPageWindowStart] = useState(1);
   const [selectedAnime, setSelectedAnime] = useState(null);
   const [showModal, setShowModal] = useState(false);
+  // Update PAGE_WINDOW on resize
+  useEffect(() => {
+    const handleResize = () => {
+      setPageWindow(getPageWindow());
+    };
+    window.addEventListener('resize', handleResize);
+    return () => window.removeEventListener('resize', handleResize);
+  }, []);
   const { cache: animeCache, setCache: setAnimeCache } = useAnimeCache();
   const { user, token } = useAuth();
   const userId = user ? user.id : "";
@@ -83,7 +98,7 @@ export default function SavedPage() {
       setCurrentPage(currentPage - 1);
     } else if (pageWindowStart > 1) {
       setPageWindowStart(pageWindowStart - PAGE_WINDOW);
-      setCurrentPage(pageWindowStart - 1 + PAGE_WINDOW);
+      setCurrentPage(pageWindowStart - 1);
     }
   };
   const handlePage = (page) => {
@@ -134,7 +149,10 @@ export default function SavedPage() {
       <div className="overflow-x-auto">
         <div className="flex flex-wrap gap-6 justify-center min-h-full py-8 px-8">
           {animeList.length === 0 ? (
-            <p className="text-center text-gray-500">Nothing to show</p>
+            <p className="text-center text-gray-500">
+              Nothing to show.<br/>
+              Please ensure you are logged in and have saved anime.
+            </p>
           ) : (
             animeList.map((anime, idx) => (
               <AnimeCard

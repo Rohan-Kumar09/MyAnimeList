@@ -8,9 +8,25 @@ import { addAnimeToList, removeAnimeFromList } from "../api/UserModifyMethod";
 
 export default function AnimeBrowsePage({ searchQuery = "" }) {
   const PAGE_SIZE = 25;
-  const PAGE_WINDOW = 7;
+  // Dynamically set PAGE_WINDOW based on screen size
+  const getPageWindow = () => {
+    if (typeof window !== 'undefined' && window.innerWidth <= 640) {
+      return 3; // mobile view
+    }
+    return 7; // desktop view
+  };
+  const [PAGE_WINDOW, setPageWindow] = useState(getPageWindow());
   const [currentPage, setCurrentPage] = useState(1);
   const [pageWindowStart, setPageWindowStart] = useState(1); // start of current window (1, 8, 15, ...)
+
+  // Update PAGE_WINDOW on resize
+  useEffect(() => {
+    const handleResize = () => {
+      setPageWindow(getPageWindow());
+    };
+    window.addEventListener('resize', handleResize);
+    return () => window.removeEventListener('resize', handleResize);
+  }, []);
   const [animeDataList, setAnimeDataList] = useState([]);
   const [allSearchResults, setAllSearchResults] = useState([]); // for search mode
   const [selectedAnime, setSelectedAnime] = useState(null);
@@ -106,7 +122,7 @@ export default function AnimeBrowsePage({ searchQuery = "" }) {
       setCurrentPage(currentPage - 1);
     } else if (pageWindowStart > 1) {
       setPageWindowStart(pageWindowStart - PAGE_WINDOW);
-      setCurrentPage(pageWindowStart - 1 + PAGE_WINDOW);
+      setCurrentPage(pageWindowStart - 1);
     }
   };
   const handlePage = (page) => {
