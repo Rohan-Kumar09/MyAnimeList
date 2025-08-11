@@ -19,26 +19,22 @@ app.use(limiter);
 // initializes the database tables if they do not exist
 async function serverStarter() {
   try {
-    await db.query(`
-      CREATE TABLE IF NOT EXISTS users (
-        id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
-        email TEXT NOT NULL UNIQUE,
-        username TEXT NOT NULL,
-        password TEXT NOT NULL,
-        created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
-      );
-    `);
+    await db`CREATE TABLE IF NOT EXISTS users (
+      id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+      email TEXT NOT NULL UNIQUE,
+      username TEXT NOT NULL,
+      password TEXT NOT NULL,
+      created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+    );`;
 
-    await db.query(`
-      CREATE TABLE IF NOT EXISTS users_anime_list (
-        id SERIAL PRIMARY KEY,
-        user_id UUID NOT NULL,
-        anime_id INTEGER NOT NULL,
-        created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-        FOREIGN KEY (user_id) REFERENCES users(id),
-        UNIQUE (user_id, anime_id)
-      );
-    `);
+    await db`CREATE TABLE IF NOT EXISTS users_anime_list (
+      id SERIAL PRIMARY KEY,
+      user_id UUID NOT NULL,
+      anime_id INTEGER NOT NULL,
+      created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+      FOREIGN KEY (user_id) REFERENCES users(id),
+      UNIQUE (user_id, anime_id)
+    );`;
   } catch (error) {
     console.error("Error initializing database:", error);
   }
@@ -46,8 +42,9 @@ async function serverStarter() {
 
 serverStarter();
 
-app.listen(8080, () => {
-  console.log("listening on port 8080...");
+const PORT = process.env.PORT || 8080;
+app.listen(PORT, () => {
+  console.log(`listening on port ${PORT}...`);
 });
 
 // API endpoints

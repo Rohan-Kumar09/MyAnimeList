@@ -1,9 +1,7 @@
 require('dotenv').config();
-const { Pool } = require('pg');
+const postgres = require('postgres');
 
-const pool = new Pool({
-    connectionString: process.env.SUPABASE_DB_URL,
-    ssl: { rejectUnauthorized: false }
-});
+const connectionString = process.env.SUPABASE_DB_URL;
+const db = postgres(connectionString);
 
-module.exports = pool;
+module.exports = db;
