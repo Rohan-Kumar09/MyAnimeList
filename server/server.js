@@ -6,6 +6,9 @@ app.use(express.json());
 const db = require("./db");
 app.use(cors());
 
+// Trust first proxy for Railway/Vercel deployments
+app.set('trust proxy', 1);
+
 // Rate limiting: 100 requests per 15 minutes per IP
 const limiter = rateLimit({
   windowMs: 15 * 60 * 1000, // 15 minutes

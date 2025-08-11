@@ -7,10 +7,7 @@ async function addAnimeToUserList(req, res) {
     return res.status(400).json({ error: "User ID and anime ID are required" });
   }
   try {
-    await db.query(
-      `INSERT INTO users_anime_list (user_id, anime_id) VALUES ($1, $2)`,
-      [user_id, anime_id]
-    );
+  await db`INSERT INTO users_anime_list (user_id, anime_id) VALUES (${user_id}, ${anime_id})`;
     res.status(201).json({ message: "Anime added to user's list successfully" });
   } catch (err) {
     console.error("Add anime to user list DB error:", err);
@@ -27,14 +24,11 @@ async function getUserAnime(req, res) {
   }
 
   try {
-    const results = await db.query(
-      `SELECT anime_id FROM users_anime_list WHERE user_id = $1`,
-      [user_id]
-    );
-    if (results.rows.length === 0) {
+    const results = await db`SELECT anime_id FROM users_anime_list WHERE user_id = ${user_id}`;
+    if (results.length === 0) {
       return res.status(404).json({ error: "No results found" });
     }
-    res.status(200).json(results.rows);
+    res.status(200).json(results);
   } catch (err) {
     console.error("Get user DB error:", err);
     res.status(500).json({ error: "Database error" });
@@ -47,10 +41,7 @@ async function removeAnimeFromUserList(req, res) {
     return res.status(400).json({ error: "User ID and anime ID are required" });
   }
   try {
-    await db.query(
-      `DELETE FROM users_anime_list WHERE user_id = $1 AND anime_id = $2`,
-      [user_id, anime_id]
-    );
+  await db`DELETE FROM users_anime_list WHERE user_id = ${user_id} AND anime_id = ${anime_id}`;
     res.status(200).json({ message: "Anime removed from user's list successfully" });
   } catch (err) {
     console.error("Remove anime from user list DB error:", err);
@@ -64,10 +55,8 @@ async function deleteAccount(req, res) {
     return res.status(400).json({ error: "User ID is required" });
   }
   try {
-    // Delete all anime list entries for user
-    await db.query(`DELETE FROM users_anime_list WHERE user_id = $1`, [userId]);
-    // Delete user from users table
-    await db.query(`DELETE FROM users WHERE id = $1`, [userId]);
+    await db`DELETE FROM users_anime_list WHERE user_id = ${userId}`;
+    await db`DELETE FROM users WHERE id = ${userId}`;
     res.status(200).json({ message: "Account deleted successfully" });
   } catch (err) {
     console.error("Delete account DB error:", err);
