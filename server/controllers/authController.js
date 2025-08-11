@@ -3,7 +3,7 @@ const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
 const { v4: uuidv4 } = require("uuid");
 const saltRounds = parseInt(process.env.SALT_ROUNDS);
-const JWT_SECRET = process.env.JWT_SECRET;
+const JWT_SECRET = process.env.SUPABASE_JWT_SECRET;
 
 async function authenticateUser(req, res) {
   const { email, password } = req.body;
@@ -12,14 +12,14 @@ async function authenticateUser(req, res) {
   }
 
   try {
-    const [result] = await db.query(
-      `SELECT * FROM users WHERE email = ?`,
+    const result = await db.query(
+      `SELECT * FROM users WHERE email = $1`,
       [email]
     );
-    if (result.length === 0) {
+    if (result.rows.length === 0) {
       return res.status(401).json({ error: "Invalid email or password" });
     }
-    const user = result[0];
+    const user = result.rows[0];
     const match = await bcrypt.compare(password, user.password);
     if (!match) {
       return res.status(401).json({ error: "Invalid email or password" });
@@ -55,17 +55,17 @@ async function addUser(req, res) {
   }
 
   try {
-    const [existing] = await db.query(
-      `SELECT email FROM users WHERE email = ?`,
+    const existing = await db.query(
+      `SELECT email FROM users WHERE email = $1`,
       [email]
     );
-    if (existing.length > 0) {
+    if (existing.rows.length > 0) {
       return res.status(409).json({ error: "User with this email already exists" });
     }
     const hashedPassword = await bcrypt.hash(password, saltRounds);
     const userId = uuidv4();
     await db.query(
-      `INSERT INTO users (id, email, username, password) VALUES (?, ?, ?, ?)`,
+      `INSERT INTO users (id, email, username, password) VALUES ($1, $2, $3, $4)`,
       [userId, email, username, hashedPassword]
     );
     res.status(201).json({ message: "User added successfully" });

@@ -14,26 +14,26 @@ const limiter = rateLimit({
   legacyHeaders: false, // Disable the X-RateLimit-* headers
 });
 
-//app.use(limiter); // DISABLED FOR DEVELOPMENT
+app.use(limiter); 
 
 // initializes the database tables if they do not exist
 async function serverStarter() {
   try {
     await db.query(`
       CREATE TABLE IF NOT EXISTS users (
-        id CHAR(36) PRIMARY KEY,
-        email VARCHAR(255) NOT NULL UNIQUE,
-        username VARCHAR(255) NOT NULL,
-        password VARCHAR(255) NOT NULL,
+        id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+        email TEXT NOT NULL UNIQUE,
+        username TEXT NOT NULL,
+        password TEXT NOT NULL,
         created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
       );
     `);
 
     await db.query(`
       CREATE TABLE IF NOT EXISTS users_anime_list (
-        id INT AUTO_INCREMENT PRIMARY KEY,
-        user_id CHAR(36) NOT NULL,
-        anime_id INT NOT NULL,
+        id SERIAL PRIMARY KEY,
+        user_id UUID NOT NULL,
+        anime_id INTEGER NOT NULL,
         created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
         FOREIGN KEY (user_id) REFERENCES users(id),
         UNIQUE (user_id, anime_id)

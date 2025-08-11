@@ -1,9 +1,9 @@
 const infoapi = import.meta.env.VITE_INFOAPI;
-const database = import.meta.env.VITE_DATABASE;
+const backend = import.meta.env.VITE_BACKEND;
 
 // For adding anime to the user's list
 export const addAnimeToList = async (animeInfo, token) => {
-  const response = await fetch(`${database}addAnimeToList`, {
+  const response = await fetch(`${backend}addAnimeToList`, {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
@@ -19,7 +19,7 @@ export const addAnimeToList = async (animeInfo, token) => {
 
 // For removing anime from the user's list
 export const removeAnimeFromList = async (animeInfo, token) => {
-  const response = await fetch(`${database}removeAnimeFromList`, {
+  const response = await fetch(`${backend}removeAnimeFromList`, {
     method: "POST",
     headers: {
       "Content-Type": "application/json",

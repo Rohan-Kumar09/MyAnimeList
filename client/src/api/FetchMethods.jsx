@@ -1,10 +1,10 @@
 const infoapi = import.meta.env.VITE_INFOAPI;
-const database = import.meta.env.VITE_DATABASE;
+const backend = import.meta.env.VITE_BACKEND;
 
 // For getting user information
 export const getUserInfo = async (userId, token) => {
   try {
-    const response = await fetch(`${database}user?user_id=${userId}`, {
+  const response = await fetch(`${backend}user?user_id=${userId}`, {
       headers: {
         Authorization: `Bearer ${token}`
       }

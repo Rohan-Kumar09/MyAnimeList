@@ -1,9 +1,9 @@
-const database = import.meta.env.VITE_DATABASE;
+const backend = import.meta.env.VITE_BACKEND;
 
 // For user login
 export const userLogin = async (credentials) => {
   try {
-    const response = await fetch(`${database}login`, {
+    const response = await fetch(`${backend}login`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -24,7 +24,7 @@ export const userLogin = async (credentials) => {
 // For adding a user
 export const addUser = async (userData) => {
   try {
-    const response = await fetch(`${database}addUser`, {
+    const response = await fetch(`${backend}addUser`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -45,7 +45,7 @@ export const addUser = async (userData) => {
 // for deleting a user account
 export const deleteUserAccount = async (userId, token) => {
   try {
-    const response = await fetch(`${database}user/delete`, {
+    const response = await fetch(`${backend}user/delete`, {
       method: "DELETE",
       headers: {
         "Authorization": `Bearer ${token}`,

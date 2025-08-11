@@ -2,7 +2,7 @@ import { useEffect, useRef } from "react";
 import { jwtDecode } from "jwt-decode";
 
 // for refresh endpoint
-const database = import.meta.env.VITE_DATABASE;
+const backend = import.meta.env.VITE_BACKEND;
 
 export function useTokenRefresh(token, setToken) {
   const timerRef = useRef();
@@ -19,7 +19,7 @@ export function useTokenRefresh(token, setToken) {
     if (timerRef.current) clearTimeout(timerRef.current);
 
     timerRef.current = setTimeout(() => {
-      fetch(`${database}refresh`, {
+      fetch(`${backend}refresh`, {
         method: "POST",
         headers: { Authorization: `Bearer ${token}` }
       })

@@ -8,7 +8,7 @@ async function addAnimeToUserList(req, res) {
   }
   try {
     await db.query(
-      `INSERT INTO users_anime_list (user_id, anime_id) VALUES (?, ?)`,
+      `INSERT INTO users_anime_list (user_id, anime_id) VALUES ($1, $2)`,
       [user_id, anime_id]
     );
     res.status(201).json({ message: "Anime added to user's list successfully" });
@@ -27,14 +27,14 @@ async function getUserAnime(req, res) {
   }
 
   try {
-    const [results] = await db.query(
-      `SELECT anime_id FROM users_anime_list WHERE user_id = ?`,
+    const results = await db.query(
+      `SELECT anime_id FROM users_anime_list WHERE user_id = $1`,
       [user_id]
     );
-    if (results.length === 0) {
+    if (results.rows.length === 0) {
       return res.status(404).json({ error: "No results found" });
     }
-    res.status(200).json(results);
+    res.status(200).json(results.rows);
   } catch (err) {
     console.error("Get user DB error:", err);
     res.status(500).json({ error: "Database error" });
@@ -48,7 +48,7 @@ async function removeAnimeFromUserList(req, res) {
   }
   try {
     await db.query(
-      `DELETE FROM users_anime_list WHERE user_id = ? AND anime_id = ?`,
+      `DELETE FROM users_anime_list WHERE user_id = $1 AND anime_id = $2`,
       [user_id, anime_id]
     );
     res.status(200).json({ message: "Anime removed from user's list successfully" });
@@ -65,9 +65,9 @@ async function deleteAccount(req, res) {
   }
   try {
     // Delete all anime list entries for user
-    await db.query(`DELETE FROM users_anime_list WHERE user_id = ?`, [userId]);
+    await db.query(`DELETE FROM users_anime_list WHERE user_id = $1`, [userId]);
     // Delete user from users table
-    await db.query(`DELETE FROM users WHERE id = ?`, [userId]);
+    await db.query(`DELETE FROM users WHERE id = $1`, [userId]);
     res.status(200).json({ message: "Account deleted successfully" });
   } catch (err) {
     console.error("Delete account DB error:", err);
